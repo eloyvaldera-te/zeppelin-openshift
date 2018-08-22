@@ -33,6 +33,15 @@ if [[ ! "x$ZEPPELIN_INTERPRETERS" == "x" ]]; then
   done
 fi
 
+if [[ ! "x$PYSPARK_MODULES" == "x" ]]; then
+  echo "---> Installing additional python modules..."
+  read -a py_modules<<< $(echo $PYSPARK_MODULES | sed 's/,/ /g' )
+
+  for module in ${py_modules[@]}; do
+    pip install $module
+  done
+fi
+
 if [ -d /tmp/src/configuration/ ]; then
   echo "---> Found configuration files. Copying to the distribution..."
   mv /tmp/src/configuration/* $ZEPPELIN_HOME/conf
